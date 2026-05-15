@@ -5,10 +5,23 @@ import json
 
 def cadastrar_livro(livros):
     dic = {}
-    titulo = input("Digite o titulo do livro que voce quer adicionar. ").capitalize()
+    maior_id = 0
+    titulo = input("Digite o titulo do livro que voce quer adicionar. ").capitalize().strip()
     dic["titulo"] = titulo
-    autor = input("Digite o autor do livro ").capitalize()
+    while titulo == "":
+        titulo = input("Digite o titulo do livro que voce quer adicionar. ").capitalize().strip()
+    for livro in livros:
+        if titulo == livro["titulo"]:
+            print("livro já adicionado")
+            return   
+    autor = input("Digite o autor do livro ").capitalize().strip()
     dic["autor"] = autor
+    for livro in livros:
+        if maior_id < livro["id"]:
+            maior_id = livro["id"]
+    
+    dic["id"] = maior_id + 1
+        
     livros.append(dic)
     print("Livro Adicionado!")
 
@@ -18,15 +31,20 @@ def listar_livros(livros):
         for livro in livros:
             print (f"Titulo:{livro['titulo']}")
             print(f"Autor:{livro['autor']}")
+            print(f"ID:{livro['id']}")
             encontrado = True
         if not encontrado:
             print("Nao existem livros na base de dados")
     
 def remover_livro(livros):
     encontrado = False
-    remoc = input("Digite o nome do livro a ser removido: ").capitalize()
+    try:
+        remoc= int(input("Digite o ID do livro a ser removido: "))
+    except:
+        print("Digite apenas numeros")
+        return
     for livro in livros:
-        if remoc == livro["titulo"]:
+        if remoc == livro["id"]:
             livros.remove(livro)
             print("Livro Removido")
             encontrado = True
@@ -34,10 +52,10 @@ def remover_livro(livros):
             print("livro nao encontrado")
 
 def editar_livro(livros):
-    edit = (input("Qual livro voce quer editar?")).capitalize()
+    edit = int(input("Digite o ID do livro que voce quer editar: "))
     encontrado = False
     for livro in livros:
-        if edit == livro["titulo"]:
+        if edit == livro["id"]:
             print("Livro Encontrado")
             quest = input("qual o nome do novo livro? ").capitalize()
             livro["titulo"] = quest
@@ -51,7 +69,7 @@ def editar_livro(livros):
 def salvar_livros(livros):
     with open("livros.json", "w") as arquivo:
         json.dump(livros, arquivo , indent=4, ensure_ascii=False)
-        print("Livro Salvo!")
+        print("Banco Atualizado!")
         
 def buscar_livro(livros):
     busca = input("Digite o nome do livro que voce deseja buscar: ").capitalize()
