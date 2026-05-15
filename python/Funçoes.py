@@ -28,7 +28,8 @@ def cadastrar_livro(livros):
     
 def listar_livros(livros):
         encontrado = False
-        for livro in livros:
+        lista_ordenada = sorted (livros, key = lambda livro: livro["id"]) # isso aqui (lambda) é uma função compacta que retorna o que está depois dos dois pontos quando voce chama o parametro
+        for livro in lista_ordenada:
             print (f"Titulo:{livro['titulo']}")
             print(f"Autor:{livro['autor']}")
             print(f"ID:{livro['id']}")
