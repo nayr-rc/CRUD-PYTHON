@@ -1,7 +1,8 @@
 import json
+import time
 
-
-
+def linha():
+    print("-="*30)
 
 def cadastrar_livro(livros):
     dic = {}
@@ -33,7 +34,7 @@ def listar_livros(livros):
             print (f"Titulo:{livro['titulo']}")
             print(f"Autor:{livro['autor']}")
             print(f"ID:{livro['id']}")
-            encontrado = True
+            encontrado = True  
         if not encontrado:
             print("Nao existem livros na base de dados")
     
@@ -41,14 +42,21 @@ def remover_livro(livros):
     encontrado = False
     try:
         remoc= int(input("Digite o ID do livro a ser removido: "))
+        time.sleep(3)
     except:
         print("Digite apenas numeros")
         return
     for livro in livros:
-        if remoc == livro["id"]:
-            livros.remove(livro)
-            print("Livro Removido")
-            encontrado = True
+            if remoc == livro["id"]:
+                conf = input(f"Tem certeza que deseja remover o livro {livro['titulo']}? (s/n) ").lower()
+                if conf == "s":
+                    livros.remove(livro)
+                    print("Removendo livro...")
+                    print("Livro Removido")
+                    encontrado = True
+                else:
+                    print("Operação cancelada")
+                    return
     if not encontrado:
             print("livro nao encontrado")
 
@@ -77,6 +85,8 @@ def buscar_livro(livros):
     encontrado = False
     for livro in livros :
         if busca == livro["titulo"]:
+            print("Buscando livro...")
+            time.sleep(2)
             print (f"Titulo:{livro['titulo']}")
             print(f"Autor:{livro['autor']}")
             encontrado = True
@@ -90,40 +100,41 @@ def carregar_livros():
     except:
         return []
 
-    
-
-livros = carregar_livros()           
-
-while True:
+def menu(livros):
+    linha()
+    print("Bem Vindo a Biblioteca Virtual")
+    print("Digite 1 para cadastrar um livro")
+    print("Digite 2 para listar os livros")
+    print("Digite 3 para sair do programa")
+    print("Digite 4 para remover um livro")
+    print("Digite 5 para editar um livro")
+    print("Digite 6 para buscar um livro")
+    linha()
     try:
-        perg = int(input("Digite 1 para cadastro, 2 para listar livros, 3 para sair, 4 para remover livro, 5 para editar o livro, 6 para buscar livro: "))
+        pergunta = int(input("Digite a opção desejada: "))
     except:
-        print("Digite apenas números ")
-        continue
-    if perg == 1:
-        print("-"*30)
-        cadastrar_livro(livros)
-        print("-"*30)
-        salvar_livros(livros)
-    elif perg == 2:
-        print("-"*30)
-        listar_livros(livros)
-        print("-"*30)
-    elif perg == 4:
-        print("-"*30)
-        remover_livro(livros)
-        salvar_livros(livros)
-        print("-"*30)
-    elif perg == 5:
-        print("-"*30)
-        editar_livro(livros)
-        salvar_livros(livros)
-        print("-"*30)
-    elif perg == 6:
-        print("-"*30)
-        buscar_livro(livros)    
-        print("-"*30)
-    elif perg == 3:
-        break
+        print("Digite apenas números")
+        return
+    if pergunta == 1:
+            cadastrar_livro(livros)
+            salvar_livros(livros)
+    elif pergunta == 2:
+            listar_livros(livros)
+    elif pergunta == 3:
+            print("Saindo do programa...")
+            exit()
+    elif pergunta == 4:
+            remover_livro(livros)
+            salvar_livros(livros)
+    elif pergunta == 5:
+            editar_livro(livros)
+            salvar_livros(livros)
+    elif pergunta == 6:
+            buscar_livro(livros)
     else:
-        print("opçao inválida")
+            print("Digite um numero valido")   
+livros = carregar_livros() 
+while True:
+    menu(livros)
+
+
