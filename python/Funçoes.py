@@ -42,7 +42,6 @@ def remover_livro(livros):
     encontrado = False
     try:
         remoc= int(input("Digite o ID do livro a ser removido: "))
-        time.sleep(3)
     except:
         print("Digite apenas numeros")
         return
@@ -52,6 +51,7 @@ def remover_livro(livros):
                 if conf == "s":
                     livros.remove(livro)
                     print("Removendo livro...")
+                    time.sleep(3)
                     print("Livro Removido")
                     encontrado = True
                 else:
@@ -61,19 +61,23 @@ def remover_livro(livros):
             print("livro nao encontrado")
 
 def editar_livro(livros):
-    edit = int(input("Digite o ID do livro que voce quer editar: "))
-    encontrado = False
-    for livro in livros:
-        if edit == livro["id"]:
-            print("Livro Encontrado")
-            quest = input("qual o nome do novo livro? ").capitalize()
-            livro["titulo"] = quest
-            autor = input("Qual o nome do autor? ").capitalize()
-            livro["autor"] = autor
-            encontrado = True
+        try:
+            edit = int(input("Digite o ID do livro que voce quer editar: "))
+        except:
+            print("Digite apenas numeros.")
+            return
+        encontrado = False
+        for livro in livros:
+            if edit == livro["id"]:
+                print("Livro Encontrado")
+                quest = input("qual o nome do novo livro? ").capitalize()
+                livro["titulo"] = quest
+                autor = input("Qual o nome do autor? ").capitalize()
+                livro["autor"] = autor
+                encontrado = True
             
-    if not encontrado :
-        print("Livro nao encontrado")
+        if not encontrado :
+                print("Livro nao encontrado")
 
 def salvar_livros(livros):
     with open("livros.json", "w") as arquivo:
@@ -114,27 +118,30 @@ def menu(livros):
         pergunta = int(input("Digite a opção desejada: "))
     except:
         print("Digite apenas números")
-        return
-    if pergunta == 1:
+        return 
+    return pergunta
+
+livros = carregar_livros() 
+while True:
+    opçao = menu(livros)
+    if opçao == 1:
             cadastrar_livro(livros)
             salvar_livros(livros)
-    elif pergunta == 2:
+    elif opçao == 2:
             listar_livros(livros)
-    elif pergunta == 3:
+    elif opçao  == 3:
             print("Saindo do programa...")
+            time.sleep(2)
             exit()
-    elif pergunta == 4:
+    elif opçao == 4:
             remover_livro(livros)
             salvar_livros(livros)
-    elif pergunta == 5:
+    elif opçao == 5:
             editar_livro(livros)
             salvar_livros(livros)
-    elif pergunta == 6:
+    elif opçao == 6:
             buscar_livro(livros)
     else:
             print("Digite um numero valido")   
-livros = carregar_livros() 
-while True:
-    menu(livros)
 
 
