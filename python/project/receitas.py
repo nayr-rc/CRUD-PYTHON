@@ -1,14 +1,11 @@
-import json
 import time
-def linha():
-    print("-="*30)
 def adicionar_receita(receitas):
     dic = {}
     maior_id = 0
     
     try:
             adicao = int(input("Digite o valor que foi adicionado:"))
-            dic["receita"] = adicao
+            dic["receita"] = adicao 
     except:
             print("Digite Apenas numeros")
             return
@@ -23,8 +20,8 @@ def adicionar_receita(receitas):
     receitas.append(dic)
     print("Valor Adicionado!")
     
-def listar_receitas(receitas):
-    encontrado = False
+    def listar_receitas(receitas):
+        encontrado = False
     lista_ordenada = sorted(receitas, key= lambda receita: receita["id"])
     for receita in lista_ordenada:
             print (f"Valor: {receita['receita']:.2f}")
@@ -33,17 +30,7 @@ def listar_receitas(receitas):
             encontrado = True  
     if not encontrado :
             print("Dado nao encontrado na base de dados")
-            
-def carregar_receitas ():
-    try:
-        with open ("receitas.json", "r" ) as arquivo:
-            return json.load(arquivo)
-    except:
-        return []
-def salvar_receitas(receitas):
-    with open("receitas.json", "w") as arquivo:
-        json.dump(receitas, arquivo , indent=4, ensure_ascii=False)
-        print("Banco Atualizado!")
+
 def remover_receitas(receitas):
     encontrado = False
     
@@ -66,6 +53,8 @@ def remover_receitas(receitas):
                     return
     if not encontrado:
             print("receita nao encontrada")
+
+
 def editar_receita(receitas):
     try:
         edit = int(input("Digite o ID da receita que voce deseja editar: "))
@@ -83,43 +72,10 @@ def editar_receita(receitas):
             encontrado = True
     if not encontrado:
             print("Receita nao encontrada. ")
-    
-        
 
-def menu(receitas):
-    linha()
-    print("Bem Vindo ao seu relatorio de receitas")
-    print("Digite 1 para Adicionar uma receita nova")
-    print("Digite 2 para listar as receitas")
-    print("Digite 3 para sair do programa")
-    print("Digite 4 para remover uma receita")
-    print("Digite 5 para editar uma receita")
-    linha()
-    
-    try:
-        pergunta = int(input("Digite a opção desejada: "))
-    except:
-        print("Digite apenas números")
-        return 
-    return pergunta
-            
-    
-receitas = carregar_receitas()
 
-while True:
-    opçao = menu(receitas)
-    
-    if opçao == 1:
-        adicionar_receita(receitas)
-        salvar_receitas(receitas)
-    elif opçao == 2:
-        listar_receitas(receitas)
-        linha()
-    elif opçao == 3:
-        break
-    elif opçao == 4:
-        remover_receitas(receitas)
-        salvar_receitas(receitas)
-    elif opçao == 5:
-        editar_receita(receitas)
-        salvar_receitas(receitas)
+def soma_das_receitas(receitas):
+    total = 0
+    for receita in receitas:  
+        total+= receita["receita"]
+    return total 

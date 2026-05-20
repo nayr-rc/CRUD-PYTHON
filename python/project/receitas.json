@@ -8,10 +8,5 @@
         "receita": 12000,
         "descricao": "Laranjas",
         "id": 2
-    },
-    {
-        "receita": 20000,
-        "descricao": "Leao",
-        "id": 3
     }
 ]
